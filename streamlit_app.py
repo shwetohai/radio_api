@@ -1,9 +1,9 @@
 import streamlit as st
 from typing import List
-from api.dto.prompt_dto import HumanPromptDto, ConverseResponseDto
-from api.ai.prompt_handler import handle_message
+from prompt_dto import HumanPromptDto, ConverseResponseDto
+from prompt_handler import handle_message
 import time
-from api.logging import logger
+from logging import logger
 
 def log_elapsed_time(name: str, st: float, et: float):
     elapsed_time = et - st
