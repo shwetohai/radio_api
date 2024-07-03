@@ -34,7 +34,8 @@ class HumanPromptDto(ConsumerPromptDto):
 
 class ConverseResponseDto(BaseModel):
     response: str
-
+    success: bool
+    error: str
 
 def handle_message(dto: HumanPromptDto):
     agent = build_agent()
@@ -44,7 +45,7 @@ def handle_message(dto: HumanPromptDto):
     print(f"\n\n agent result is \n\n {res.sources}\n\n")
     if response == "skip_response_to_the_user":
         response = ""
-    return ConverseResponseDto(response = response)
+    return response
 
 
 router = APIRouter(
@@ -60,15 +61,18 @@ def log_elapsed_time(name: str, st: float, et: float):
 
 @router.post("/converse")
 def converse(dto: HumanPromptDto) -> ConverseResponseDto:
-    st = time.time()
-    response: ConverseResponseDto = handle_message(dto)
-    et = time.time()
-    print(f"\n\n response from llm agent is: \n\n {response}\n\n")
-    log_elapsed_time("converse", st, et)
-    return response
+    try:
+        st = time.time()
+        response = handle_message(dto)
+        et = time.time()
+        print(f"\n\n response from llm agent is: \n\n {response}\n\n")
+        log_elapsed_time("converse", st, et)
+        return ConverseResponseDto(response= response, error = "", success = True)
+    except Exception as e:
+        return ConverseResponseDto(response= "", error = str(e), success = False)
 
 # Include the router
 app.include_router(router)
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8111)
+    uvicorn.run(app, host="0.0.0.0")
