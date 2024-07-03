@@ -6,6 +6,9 @@ langchain-openai
 black
 isort
 llama-index
+llama-index-llms-openai
+llama-index-program-openai
+llama-index-agent-openai
 psycopg2-binary
 boto3
 fastapi

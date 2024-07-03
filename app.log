@@ -286,3 +286,25 @@
 
 
 2024-05-20 11:40:35,151 - api.logging - INFO - converse Execution time: 2.13 seconds
+2024-07-03 15:11:52,108 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-07-03 15:11:53,312 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-07-03 15:11:53,313 - api.logging - INFO - 
+
+ response from llm agent is: 
+
+ response='Please select the date and time for your availability from the pop-up.'
+
+
+2024-07-03 15:11:53,314 - api.logging - INFO - converse Execution time: 2.54 seconds
+2024-07-03 15:36:53,897 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-07-03 15:36:54,789 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-07-03 15:37:29,910 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-07-03 15:37:30,828 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-07-03 15:37:30,830 - api.logging - INFO - 
+
+ response from llm agent is: 
+
+ response='Please select the date and time for your working hours from the pop-up.'
+
+
+2024-07-03 15:37:30,830 - api.logging - INFO - converse Execution time: 2.35 seconds
