@@ -1,8 +1,9 @@
 from typing import Any, Dict, List, Optional, Type
 from dotenv import find_dotenv, load_dotenv
 from llama_index.agent.openai.base import OpenAIAgent
-from llama_index.llms.openai.base import OpenAI
-from llama_index.core.tools import FunctionTool
+from llama_index.llms.openai import OpenAI
+from llama_index.core.tools.function_tool import FunctionTool
+
 from tool import AllTool
 from prompts import SYSTEM_PROMPT
 
