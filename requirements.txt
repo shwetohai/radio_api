@@ -1,0 +1,13 @@
+openai
+streamlit
+python-dotenv
+langchain
+langchain-openai
+black
+isort
+llama-index
+psycopg2-binary
+boto3
+fastapi
+uvicorn
+pydantic

@@ -1,0 +1,34 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+fastapi = "*"
+uvicorn = "*"
+python-dotenv = "*"
+supabase = "*"
+openai = "*"
+pydantic = "==1.10.13"
+pyjwt = "*"
+langchain = "*"
+faiss-cpu = "*"
+bullmq = "*"
+pytz = "*"
+llama-index = "*"
+llama-index-llms-openai = "*"
+llama-index-program-openai = "*"
+llama-index-agent-openai = "*"
+python-dateutil = "*"
+structlog = "*"
+emoji = "*"
+pytest = "*"
+pytest-html = "*"
+pytest-cov = "*"
+streamlit = "*"
+
+[dev-packages]
+pytest = "*"
+
+[requires]
+python_version = "3.11"
