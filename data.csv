@@ -1,0 +1,7 @@
+id,message,type,tool
+0,Hey I want to talk to agent,user,
+1,Tell user we are connecting you to a human agent,function,talk_to_human_agent
+2,We are connecting you to a human agent.,bot,
+0,Hey I want to talk to agent,user,
+1,Tell user we are connecting you to a human agent,function,talk_to_human_agent
+2,We are connecting you to a human agent.,bot,

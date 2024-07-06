@@ -35,6 +35,7 @@ class ConsumerPromptDto(BaseModel):
 
 class HumanPromptDto(ConsumerPromptDto):
     """this is the EA"""
+
     # human_id: str | None
 
 

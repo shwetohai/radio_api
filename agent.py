@@ -1,3 +1,4 @@
+import os
 from typing import Any, Dict, List, Optional, Type
 
 import pandas as pd
@@ -9,7 +10,6 @@ from llama_index.llms.openai import OpenAI
 
 from prompts import SYSTEM_PROMPT
 from tool import AllTool
-import os
 
 load_dotenv(find_dotenv())
 
@@ -19,17 +19,14 @@ def get_history():
     if os.path.exists("data.csv"):
         df = pd.read_csv("data.csv")
 
-        type = df['type'].tolist()
-        message = df['message'].tolist()
-        tool = df['tool'].tolist()
-        for i in range(0,len(message)):
+        type = df["type"].tolist()
+        message = df["message"].tolist()
+        tool = df["tool"].tolist()
+        for i in range(0, len(message)):
             if type[i] == "user":
                 chat_messages.append(
-                    ChatMessage(
-                        role=MessageRole.USER,
-                        content=message[i]
-                        )
-                    )
+                    ChatMessage(role=MessageRole.USER, content=message[i])
+                )
             elif type[i] == "function":
                 chat_messages.append(
                     ChatMessage(
@@ -38,14 +35,11 @@ def get_history():
                         additional_kwargs={"name": tool[i]},
                     )
                 )
-            
+
             else:
                 chat_messages.append(
-                    ChatMessage(
-                        role=MessageRole.ASSISTANT,
-                        content=message[i]
-                        )
-                    )
+                    ChatMessage(role=MessageRole.ASSISTANT, content=message[i])
+                )
 
     return chat_messages
 
@@ -115,7 +109,7 @@ If you exectue this function no message will be sent to the user in response.
         llm=llm,
         verbose=True,
         system_prompt=SYSTEM_PROMPT,
-        chat_history=get_history()
+        chat_history=get_history(),
         # chat_history=history, #will add the getting history from database and also bring it in a format to be passed here in llama index agent
     )
     return agent
