@@ -1,13 +1,53 @@
 from typing import Any, Dict, List, Optional, Type
+
+import pandas as pd
 from dotenv import find_dotenv, load_dotenv
 from llama_index.agent.openai.base import OpenAIAgent
-from llama_index.llms.openai import OpenAI
+from llama_index.core.llms import ChatMessage, MessageRole
 from llama_index.core.tools.function_tool import FunctionTool
+from llama_index.llms.openai import OpenAI
 
-from tool import AllTool
 from prompts import SYSTEM_PROMPT
+from tool import AllTool
+import os
 
 load_dotenv(find_dotenv())
+
+
+def get_history():
+    chat_messages: List[ChatMessage] = []
+    if os.path.exists("data.csv"):
+        df = pd.read_csv("data.csv")
+
+        type = df['type'].tolist()
+        message = df['message'].tolist()
+        tool = df['tool'].tolist()
+        for i in range(0,len(message)):
+            if type[i] == "user":
+                chat_messages.append(
+                    ChatMessage(
+                        role=MessageRole.USER,
+                        content=message[i]
+                        )
+                    )
+            elif type[i] == "function":
+                chat_messages.append(
+                    ChatMessage(
+                        role=MessageRole.FUNCTION,
+                        content=message[i],
+                        additional_kwargs={"name": tool[i]},
+                    )
+                )
+            
+            else:
+                chat_messages.append(
+                    ChatMessage(
+                        role=MessageRole.ASSISTANT,
+                        content=message[i]
+                        )
+                    )
+
+    return chat_messages
 
 
 def build_agent():
@@ -16,8 +56,8 @@ def build_agent():
         "upload_image": {},
         "my_availability": {},
         "talk_to_human_agent": {},
-        "skip_response_to_the_user": {}
-        #"talk_to_human_agent": {"sql_query": "Sql query"}
+        "skip_response_to_the_user": {},
+        # "talk_to_human_agent": {"sql_query": "Sql query"}
     }
 
     description_all = [
@@ -30,28 +70,32 @@ Use this function when you want to skip responding to the user.
 This is useful when you don't want to sound repetetive or annoying.
 This is also useful when the user sends a message that is not relevant to the conversation or when the user sends a message that is not actionable.
 If you exectue this function no message will be sent to the user in response.
-"""
+""",
     ]
 
-    spec_functions = ["upload_image", "my_availability", "talk_to_human_agent", "skip_response_to_the_user"]
+    spec_functions = [
+        "upload_image",
+        "my_availability",
+        "talk_to_human_agent",
+        "skip_response_to_the_user",
+    ]
 
     reminder_tool = AllTool(
-        FIELD_DESCRIPTIONS=FIELD_DESCRIPTIONS,
-        spec_functions=spec_functions
+        FIELD_DESCRIPTIONS=FIELD_DESCRIPTIONS, spec_functions=spec_functions
     )
 
     tools_all = []
     for i in range(0, len(spec_functions)):
         try:
-            #print(spec_functions[i])
+            # print(spec_functions[i])
             func_tool = reminder_tool.extract_func(spec_functions[i])
-            #print(spec_functions[i])
+            # print(spec_functions[i])
             schema = reminder_tool.extract_schema(spec_functions[i])
-            #print(spec_functions[i])
-            #print("\n\n")
-            #print(schema.schema())
+            # print(spec_functions[i])
             # print("\n\n")
-            #print(spec_functions[i])
+            # print(schema.schema())
+            # print("\n\n")
+            # print(spec_functions[i])
             # print(schema.model_json_schema())
             # print("\n\n")
             tool = FunctionTool.from_defaults(
@@ -71,7 +115,7 @@ If you exectue this function no message will be sent to the user in response.
         llm=llm,
         verbose=True,
         system_prompt=SYSTEM_PROMPT,
+        chat_history=get_history()
         # chat_history=history, #will add the getting history from database and also bring it in a format to be passed here in llama index agent
     )
-
     return agent
