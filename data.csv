@@ -1,7 +1,24 @@
 id,message,type,tool
-0,Hey I want to talk to agent,user,
+0,I want to schedule my timings to 6th august 10am to 3pm,user,
+1,Ask user to select date and time from this pop up,function,my_availability
+2,Please select the date and time from the pop-up to schedule your availability.,bot,
+0,I want to schedule my timings to 6th august 10am to 3pm,user,
+1,Ask user to select date and time from this pop up,function,my_availability
+2,Please select the date and time from the pop-up to schedule your availability.,bot,
+0,I want to talk to ahuman agent,user,
 1,Tell user we are connecting you to a human agent,function,talk_to_human_agent
 2,We are connecting you to a human agent.,bot,
-0,Hey I want to talk to agent,user,
-1,Tell user we are connecting you to a human agent,function,talk_to_human_agent
-2,We are connecting you to a human agent.,bot,
+0,I want to schedule my timings to 6th august 10am to 3pm,user,
+1,Ask user to select date and time from this pop up,function,my_availability
+2,Please select the date and time from the pop-up to schedule your availability.,bot,
+0,I want to schedule my timings to 6th august 10am to 3pm,user,
+1,Ask user to select date and time from this pop up,function,my_availability
+2,Please select the date and time from the pop-up to schedule your availability.,bot,
+0,Hey I want to know who won the pm election in India. I want to schedule my timings,user,
+1,Ask user to select date and time from this pop up,function,my_availability
+2,SUCCESS. No response will be sent to the user.,function,skip_response_to_the_user
+3,"Currently I am in Beta. I can help you with user schedule, upload image and assist with talking to human agent",bot,
+0,Hey I want to know who won the pm election in India. I want to schedule my timings,user,
+1,Ask user to select date and time from this pop up,function,my_availability
+2,SUCCESS. No response will be sent to the user.,function,skip_response_to_the_user
+3,Please select the date and time from the pop-up to schedule your availability.,bot,

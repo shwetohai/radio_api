@@ -56,7 +56,7 @@ def build_agent():
 
     description_all = [
         "Use this when user wants to upload a image",
-        "Use this when user wants to schedule their availability",
+        "Use this when user wants to schedule their availability, working hours",
         "Use this when user wants to talk to a human agent",
         """Skip the response to the user
 

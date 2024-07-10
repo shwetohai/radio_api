@@ -16,3 +16,4 @@ boto3
 fastapi
 uvicorn
 pydantic
+mysql-connector-python
