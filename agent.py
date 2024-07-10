@@ -40,8 +40,9 @@ def get_history():
                 chat_messages.append(
                     ChatMessage(role=MessageRole.ASSISTANT, content=message[i])
                 )
+    print(chat_messages[-20:])
 
-    return chat_messages
+    return chat_messages[-20:]
 
 
 def build_agent():

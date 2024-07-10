@@ -49,7 +49,7 @@ class ConverseResponseDto(BaseModel):
 
 def extract_tools_name(
     functions: List,
-) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]], bool]:
     """
     Extracts function names from a list of functions.
 
@@ -61,6 +61,7 @@ def extract_tools_name(
     """
     tool_name = []
     agent_sources = []
+    flag = True
     if functions:
         for function in functions:
             tool_name.append({"action": function.tool_name})
@@ -72,7 +73,10 @@ def extract_tools_name(
                     "raw_output": function.raw_output,
                 }
             )
-    return tool_name, agent_sources
+            if function.tool_name != "skip_response_to_the_user":
+                flag = False
+
+    return tool_name, agent_sources, flag
 
 
 def save_history(
@@ -125,16 +129,17 @@ def handle_message(
     try:
         agent = build_agent()
         res = agent.chat(dto.prompt)
-        tools_names, functions = extract_tools_name(res.sources)
+        tools_names, functions, flag = extract_tools_name(res.sources)
         response = res.response
-        dumb = tools_names
-        if len(dumb) == 0:
-            dumb = [{"action": "nothing"}]
+        #dumb = tools_names
+        #if len(dumb) == 0:
+        #    dumb = [{"action": "nothing"}]
 
         if (
             not response
             or response == "skip_response_to_the_user"
             or response == "None"
+            or flag
             #or dumb[-1]["action"] == "skip_response_to_the_user"
         ):
             response = "Currently I am in Beta. I can help you with user schedule, upload image and assist with talking to human agent"
