@@ -1,7 +1,0 @@
-id,message,type,tool
-0,Hey I want to know who won the pm election in India. Also who won the wwe match between john cena and randy orton,user,
-1,SUCCESS. No response will be sent to the user.,function,skip_response_to_the_user
-2,"Currently I am in Beta. I can help you with user schedule, upload image and assist with talking to human agent",bot,
-0,Hey I want to know who won the pm election in India. Also who won the wwe match between john cena and randy orton,user,
-1,SUCCESS. No response will be sent to the user.,function,skip_response_to_the_user
-2,"Currently I am in Beta. I can help you with user schedule, upload image and assist with talking to human agent",bot,
