@@ -137,7 +137,7 @@ def handle_message(
 
         print(f"\n\n response pre is {response}\n\n")
 
-        if response == "Welcome" or response == "Hello":
+        if response == "Welcome" or response == "Hello" or response == "Hello.":
             return response, tools_names, functions
 
         if (

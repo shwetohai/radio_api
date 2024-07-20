@@ -114,7 +114,7 @@ Use this when user wants to upload a image
 
     def my_availability(self):
         """
-Use this when user wants to schedule their availability, working hours
+Use this when user wants to schedule their availability, working hours, working period
 """
         return "Ask user to select date and time from this pop up"
 
