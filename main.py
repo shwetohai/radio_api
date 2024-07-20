@@ -135,6 +135,11 @@ def handle_message(
         #if len(dumb) == 0:
         #    dumb = [{"action": "nothing"}]
 
+        print(f"\n\n response pre is {response}\n\n")
+
+        if response == "Welcome" or response == "Hello":
+            return response, tools_names, functions
+
         if (
             not response
             or response == "skip_response_to_the_user"
