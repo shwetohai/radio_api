@@ -57,6 +57,10 @@ def get_history():
     return chat_messages[-20:]
 
 
+
+def get_history_from_sql():
+    pass
+
 def build_agent():
 
     doctor_tool = ToolSpec(tool_type=DoctorTool)

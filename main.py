@@ -142,7 +142,7 @@ def handle_message(
             or flag
             #or dumb[-1]["action"] == "skip_response_to_the_user"
         ):
-            response = "Currently I am in Beta. I can help you with user schedule, upload image and assist with talking to human agent"
+            response = "Hello. I can help you with user schedule, upload image and assist with talking to human agent"
         print(f"response is {response}")
         print(f"tools name are {tools_names}")
         # print(2/"e")
