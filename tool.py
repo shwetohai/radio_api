@@ -95,6 +95,7 @@ class DoctorTool(BaseToolSpec):
         "my_availability": {},
         "talk_to_human_agent": {},
         "skip_response_to_the_user": {},
+        "greetings": {}
         # "talk_to_human_agent": {"sql_query": "Sql query"}
     }
 
@@ -102,6 +103,7 @@ class DoctorTool(BaseToolSpec):
         "upload_image",
         "my_availability",
         "talk_to_human_agent",
+        "greetings",
         "skip_response_to_the_user",
     ]
 
@@ -114,13 +116,45 @@ Use this when user wants to upload a image
 
     def my_availability(self):
         """
-Use this when user wants to schedule their availability, working hours, working period
+Use this when user wants to resechedule or schedule their availability, working hours, working period, new timings, new date
+
+User message examples:
+- Reschedule tomorrow's assignments to another day?
+- Move tomorrow’s tasks to another time?
+- I have a conflict tomorrow. I need to reschedule?
+- I'm unavailable tomorrow. Please find a new time?
+- Set a new date for tomorrow’s assignments?
+- I need to reschedule tomorrow’s work.
+- Move our tasks tomorrow to a different time?
+- I won't be available tomorrow. Reschedule our tasks?
+
 """
         return "Ask user to select date and time from this pop up"
 
     def talk_to_human_agent(self):
         """
 Use this when user wants to talk to a human agent
+
+User message examples:
+- I can't log into Smaro app
+- I can't create a new template in Smaro
+- Unable to raise tickets in Smaro app
+- Profile updates not reflecting in Smaro. How to fix?
+- Patient reports not showing in panel after adding
+- Why can't I raise tickets in Smaro?
+- Profile changes not updating in Smaro. Can you help?
+- How to ensure patient reports appear in panel?
+- Ticket-raising feature not working in Smaro. Can you assist?
+- Changes to my profile not reflecting in Smaro
+- Reports added not showing in diagnostic panel
+- Branches facing login issues with Smaro app
+- Trouble creating new templates in Smaro. Can you help?
+- Ticket-raising in Smaro app not functioning. Need help.
+- Profile changes not showing in Smaro app
+- Patient reports not appearing in panel after adding
+- The DICOM viewer is showing errors. Troubleshoot?
+- The clinical data might be incomplete
+- This case is urgent. Provide feedback within the next hour?
 """
         return "Tell user we are connecting you to a human agent"
 
@@ -134,6 +168,12 @@ This is also useful when the user sends a message that is not relevant to the co
 If you exectue this function no message will be sent to the user in response.
 """
         return "SUCCESS. No response will be sent to the user."
+    
+    def greetings(self):
+        """
+Use this function when the user greets by saying hello, hi, hey, howdy etc   
+"""
+        return "Hello I am Smaro. I can help you with user schedule, upload image and assist with talking to human agent"
 
     def create_optimized_sql_query(
         self,
