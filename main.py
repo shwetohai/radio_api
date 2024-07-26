@@ -144,10 +144,10 @@ def handle_message(
             not response
             or response == "skip_response_to_the_user"
             or response == "None"
-            or flag
+            # or flag
             #or dumb[-1]["action"] == "skip_response_to_the_user"
         ):
-            response = "Hello. I can help you with user schedule, upload image and assist with talking to human agent"
+            response = "Hello. I am Smaro. I can help you with user schedule, upload image and assist with talking to human agent"
         print(f"response is {response}")
         print(f"tools name are {tools_names}")
         # print(2/"e")
@@ -211,4 +211,4 @@ def converse(dto: HumanPromptDto) -> ConverseResponseDto:
 app.include_router(router)
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0")
+    uvicorn.run(app, host="0.0.0.0", port = 8009)
