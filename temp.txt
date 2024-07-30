@@ -1,0 +1,32 @@
+https://dev.to/igfreetech/pyenv-pipenv-on-mac-24cj
+
+
+brew update
+brew install pyenv
+
+pyenv install 3.11.0
+
+pyenv global 3.11.0
+
+
+brew install pipenv
+
+nano ~/.zshrc
+
+add this to 
+
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+
+# for reloading
+source ~/.zshrc
+
+python --version
+
+pipenv install
+pipenv shell
+pipenv --rm
+
+python main.py
