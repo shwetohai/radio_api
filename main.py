@@ -7,7 +7,12 @@ import uvicorn
 from fastapi import APIRouter, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from agent import build_agent
+from agent import AgentManager
+
+db_url = os.getenv("db_url")
+db_user = os.getenv("db_user")
+db_password = os.getenv("db_password")
+db_name = os.getenv("db_name")
 
 # Initialize the FastAPI application
 app = FastAPI(title="Radiologist Agent API", version="0.1.0")
@@ -126,7 +131,8 @@ def handle_message(
         Tuple[str, List[str]]: The response from the agent and a list of tools used.
     """
     try:
-        agent = build_agent()
+        agent_manager = AgentManager(db_url, db_user, db_password, db_name)
+        agent = agent_manager.build_agent()
         print(agent)
         res = agent.chat(dto.prompt)
         tools_names, functions, flag = extract_tools_name(res.sources)

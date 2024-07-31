@@ -26,9 +26,11 @@ pytest = "*"
 pytest-html = "*"
 pytest-cov = "*"
 streamlit = "*"
+mysql-connector-python = "*"
 
 [dev-packages]
 pytest = "*"
+ipykernel = "*"
 
 [requires]
 python_version = "3.11"
