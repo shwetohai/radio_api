@@ -31,6 +31,7 @@ class ConsumerPromptDto(BaseModel):
     """DTO for the end user of the application"""
 
     message_id: str
+    conversation_id: str
     consumer_id: str
     prompt: str
 
