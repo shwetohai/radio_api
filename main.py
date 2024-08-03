@@ -164,7 +164,7 @@ def handle_message(
         
         if response == "my_availability":
             response = "Ask user to select date and time from this pop-up."
-            
+
         print(f"\n\n response pre is {response}\n\n")
 
         if response == "Welcome" or response == "Hello I am Smaro. I can help you with user schedule, upload image and assist with talking to human agent. ":
@@ -242,3 +242,6 @@ app.include_router(router)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port = 8009)
+
+#python3 main.py
+#python main.py
