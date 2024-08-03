@@ -58,7 +58,7 @@ class AgentManager:
 
         return chat_messages[-20:]  # Return the last 20 messages
 
-    def get_history_from_sql(self, consumer_id: int) -> pd.DataFrame:
+    def get_history_from_sql(self, consumer_id, chat_conversation_id) -> pd.DataFrame:
         """Retrieve chat history from a SQL database."""
         try:
             connection = mysql.connector.connect(
@@ -70,7 +70,7 @@ class AgentManager:
             print(f"Successfully connected to the database '{self.db_name}'")
 
             cursor = connection.cursor()
-            cursor.execute(f"SELECT user_id, message, type, meta_data, inserted_time FROM chat WHERE user_id = {consumer_id} ORDER BY inserted_time")
+            cursor.execute(f"SELECT chat_conversation_id, user_id, message, type, meta_data, inserted_time FROM chat WHERE chat_conversation_id = {chat_conversation_id} ORDER BY inserted_time")
             records = cursor.fetchall()
             column_names = [i[0] for i in cursor.description]
             df = pd.DataFrame(records, columns=column_names)
@@ -85,30 +85,34 @@ class AgentManager:
 
         return df
 
-    def get_chat_history_from_db(self, consumer_id: int) -> List[ChatMessage]:
+    def get_chat_history_from_db(self, consumer_id, chat_conversation_id) -> List[ChatMessage]:
         """Convert SQL database history to list of ChatMessages."""
-        df = self.get_history_from_sql(consumer_id)
-        chat_messages: List[ChatMessage] = []
+        try:
+            df = self.get_history_from_sql(consumer_id, chat_conversation_id)
+            chat_messages: List[ChatMessage] = []
 
-        if not df.empty:
-            df["meta_data"] = df["meta_data"].apply(self.safe_literal_eval)
-            types = df["type"].tolist()
-            messages = df["message"].tolist()
-            metadata = df["meta_data"].tolist()
+            if not df.empty:
+                df["meta_data"] = df["meta_data"].apply(self.safe_literal_eval)
+                types = df["type"].tolist()
+                messages = df["message"].tolist()
+                metadata = df["meta_data"].tolist()
 
-            for i in range(len(messages)):
-                if types[i] == "user":
-                    chat_messages.append(ChatMessage(role=MessageRole.USER, content=messages[i]))
-                elif types[i] == "boat":
-                    if metadata[i] and "functions" in metadata[i]:
-                        functions = metadata[i]["functions"]
-                        for function in functions:
-                            chat_messages.append(ChatMessage(role=MessageRole.FUNCTION, content=function["thought"], additional_kwargs={"name": function["tool_name"]}))
-                    chat_messages.append(ChatMessage(role=MessageRole.ASSISTANT, content=messages[i]))
+                for i in range(len(messages)):
+                    if types[i] == "user":
+                        chat_messages.append(ChatMessage(role=MessageRole.USER, content=messages[i].strip('"').strip("'")))
+                    elif types[i] == "bot":
+                        if metadata[i] and "functions" in metadata[i]:
+                            functions = metadata[i]["functions"]
+                            for function in functions:
+                                chat_messages.append(ChatMessage(role=MessageRole.FUNCTION, content=function["thought"], additional_kwargs={"name": function["tool_name"]}))
+                        chat_messages.append(ChatMessage(role=MessageRole.ASSISTANT, content=messages[i].strip('"').strip("'")))
 
-        return chat_messages
+            return chat_messages[-10:-1]
+        except Exception as e:
+            print(e)
+            return []
 
-    def build_agent(self) -> OpenAIAgent:
+    def build_agent(self, consumer_id, chat_conversation_id) -> OpenAIAgent:
         """Build and return an OpenAI agent with necessary tools."""
         doctor_tool = ToolSpec(tool_type=DoctorTool)
         all_tools: List[ToolSpec] = [doctor_tool]
@@ -125,12 +129,15 @@ class AgentManager:
             tools.extend(tool.to_tool_list())
 
         llm = OpenAI(model="gpt-4o", temperature=0)
+        chat_history_from_db = self.get_chat_history_from_db(consumer_id, chat_conversation_id)
+        print(f"\n\nchat history is\n {chat_history_from_db}\n\n")
         agent = OpenAIAgent.from_tools(
             tools,
             llm=llm,
             verbose=True,
             system_prompt=SYSTEM_PROMPT,
-            chat_history=self.get_history_from_csv(),
+            #chat_history=chat_history_from_db,
+            chat_history=[]
         )
         return agent
 

@@ -111,7 +111,7 @@ class DoctorTool(BaseToolSpec):
         """
 Use this when user wants to upload a image
 """
-        return "Here is the image upload popup. click on this button"
+        return "Here is the image upload popup. click on this button. "
         # return "Here is the image upload popup, please upload the image"
 
     def my_availability(self):
@@ -129,7 +129,7 @@ User message examples:
 - I won't be available tomorrow. Reschedule our tasks?
 
 """
-        return "Ask user to select date and time from this pop up"
+        return "Ask user to select date and time from this pop up. "
 
     def talk_to_human_agent(self):
         """
@@ -156,7 +156,7 @@ User message examples:
 - The clinical data might be incomplete
 - This case is urgent. Provide feedback within the next hour?
 """
-        return "Tell user we are connecting you to a human agent"
+        return "Tell user we are connecting you to a human agent. "
 
     def skip_response_to_the_user(self):
         """
@@ -171,9 +171,9 @@ If you exectue this function no message will be sent to the user in response.
     
     def greetings(self):
         """
-Use this function when the user greets by saying hello, hi, hey, howdy etc   
+Use this function when the user greets by saying hello, hi, hey, howdy etc. Never call this function if user is not greeting by saying hello, hi, hello smaro etc 
 """
-        return "Hello I am Smaro. I can help you with user schedule, upload image and assist with talking to human agent"
+        return "Hello I am Smaro. I can help you with user schedule, upload image and assist with talking to human agent. "
 
     def create_optimized_sql_query(
         self,

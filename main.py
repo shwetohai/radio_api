@@ -30,9 +30,9 @@ app.add_middleware(
 class ConsumerPromptDto(BaseModel):
     """DTO for the end user of the application"""
 
-    message_id: str
-    conversation_id: str
-    consumer_id: str
+    message_id: Any
+    conversation_id: Any
+    consumer_id: Any
     prompt: str
 
 
@@ -118,6 +118,20 @@ def save_history(
     else:
         data.to_csv("data.csv", mode="w", header=True, index_label="id")
 
+tool_response_dicte = {
+    "upload_image": "Here is the image upload popup. Click on this button. ",
+    "my_availability": "Ask user to select date and time from this pop-up. ",
+    "talk_to_human_agent": "Tell user we are connecting you to a human agent. ",
+    "greetings": "Hello, I am Smaro. I can help you with user scheduling, uploading images, and assist with talking to a human agent. "
+}
+
+def deal_with_empty(response, tools_names):
+    if response == "":
+        for tool in tools_names:
+            if tool['action'] in ["upload_image", "my_availability", "talk_to_human_agent","greetings"]:
+                response = response + tool_response_dicte[tool['action']]
+    return response
+
 
 def handle_message(
     dto: HumanPromptDto,
@@ -133,7 +147,7 @@ def handle_message(
     """
     try:
         agent_manager = AgentManager(db_url, db_user, db_password, db_name)
-        agent = agent_manager.build_agent()
+        agent = agent_manager.build_agent(dto.consumer_id, dto.conversation_id)
         print(agent)
         res = agent.chat(dto.prompt)
         tools_names, functions, flag = extract_tools_name(res.sources)
@@ -141,10 +155,19 @@ def handle_message(
         #dumb = tools_names
         #if len(dumb) == 0:
         #    dumb = [{"action": "nothing"}]
-
+        response = deal_with_empty(response, tools_names)
+        if response == "talk_to_human_agent":
+            response = "Tell user we are connecting you to a human agent."
+        
+        if response == "upload_image":
+            response = "Here is the image upload popup. Click on this button."
+        
+        if response == "my_availability":
+            response = "Ask user to select date and time from this pop-up."
+            
         print(f"\n\n response pre is {response}\n\n")
 
-        if response == "Welcome" or response == "Hello I am Smaro. I can help you with user schedule, upload image and assist with talking to human agent":
+        if response == "Welcome" or response == "Hello I am Smaro. I can help you with user schedule, upload image and assist with talking to human agent. ":
             return response, tools_names, functions
 
         if (
