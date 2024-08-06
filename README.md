@@ -4,7 +4,6 @@
 
 To set up the project, follow these steps:
 
-First, create a virtual environment to isolate the project's dependencies:
 ```bash
 python3 -m venv venv_radio
 ```
