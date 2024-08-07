@@ -223,7 +223,7 @@ def converse(dto: HumanPromptDto) -> ConverseResponseDto:
         response, tools_names, functions = handle_message(dto)
         et = time.time()
         log_elapsed_time("converse", st, et)
-        save_history(dto.prompt, response, functions)
+        #save_history(dto.prompt, response, functions)
         return ConverseResponseDto(
             response=response, error="", success=True, type=tools_names, functions=functions
         )
