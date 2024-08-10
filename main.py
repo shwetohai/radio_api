@@ -8,6 +8,14 @@ from fastapi import APIRouter, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from agent import AgentManager
+import logging
+from logging_config import setup_logging
+
+# If needed, ensure the logging is set up
+setup_logging()
+
+# Create a logger object
+logger = logging.getLogger(__name__)
 
 db_url = os.getenv("db_url")
 db_user = os.getenv("db_user")
@@ -148,7 +156,7 @@ def handle_message(
     try:
         agent_manager = AgentManager(db_url, db_user, db_password, db_name)
         agent = agent_manager.build_agent(dto.consumer_id, dto.conversation_id)
-        print(agent)
+        logger.info(agent)
         res = agent.chat(dto.prompt)
         tools_names, functions, flag = extract_tools_name(res.sources)
         response = res.response
@@ -165,7 +173,7 @@ def handle_message(
         if response == "my_availability":
             response = "Ask user to select date and time from this pop-up."
 
-        print(f"\n\n response pre is {response}\n\n")
+        logger.info(f"\n\n response pre is {response}\n\n")
 
         if response == "Welcome" or response == "Hello I am Smaro. I can help you with user schedule, upload image and assist with talking to human agent. ":
             return response, tools_names, functions
@@ -178,8 +186,8 @@ def handle_message(
             #or dumb[-1]["action"] == "skip_response_to_the_user"
         ):
             response = "Hello. I am Smaro. I can help you with user schedule, upload image and assist with talking to human agent"
-        print(f"response is {response}")
-        print(f"tools name are {tools_names}")
+        logger.info(f"response is {response}")
+        logger.info(f"tools name are {tools_names}")
         # print(2/"e")
         return response, tools_names, functions
     except Exception as e:
@@ -204,7 +212,7 @@ def log_elapsed_time(name: str, st: float, et: float) -> None:
     """
     elapsed_time = et - st
     output = f"{name} Execution time: {'{:.2f}'.format(elapsed_time)} seconds"
-    print(output)
+    logger.info(output)
 
 
 @router.post("/converse")
